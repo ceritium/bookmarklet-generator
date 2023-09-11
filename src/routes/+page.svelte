@@ -62,6 +62,10 @@
 	});
 </script>
 
+<svelte:head>
+  <title>Bookmarklet generator | {title} </title>
+</svelte:head>
+
 <h1> Bookmarklet generator </h1>
 <a class='github-link' href="https://github.com/ceritium/bookmarklet-generator"> Github </a>
 <label>
@@ -70,7 +74,7 @@
 </label>
 <label for="code">
   Code
-  <AutoResizeTextArea name="code" bind:value={code} minRows={5} />
+  <AutoResizeTextArea bind:value={code} minRows={5} maxRows={50} />
   {#if (jsError) }
     <small style="color: red;">{jsError}</small>
   {/if}
