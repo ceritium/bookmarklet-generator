@@ -3,7 +3,6 @@
   import { onMount } from 'svelte';
 	import LZString from 'lz-string';
   import { minify } from "terser";
-  import AutoResizeTextArea from "$lib/autoresizeTextArea.svelte";
 
   let ready = false;
   let code = "";
@@ -74,7 +73,7 @@
 </label>
 <label for="code">
   Code
-  <AutoResizeTextArea bind:value={code} minRows={5} maxRows={50} />
+  <textarea bind:value={code} rows={10} />
   {#if (jsError) }
     <small style="color: red;">{jsError}</small>
   {/if}
@@ -103,6 +102,9 @@
 <textarea readonly value={linkCode} rows={5}/>
 
 <style>
+  textarea {
+    resize: vertical;
+  }
   .github-link {
     position: absolute;
     top: 0;
