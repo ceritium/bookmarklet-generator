@@ -13,6 +13,8 @@
   let uriEncoded = true;
   let jsError = null;
 
+  let timeout
+
   const generateMarkletCode = async (code, compress, uriEncoded) => {
     let processedCode = code.trim()
     if (compress) {
@@ -36,7 +38,11 @@
   }
 
   $: {
-    generateMarkletCode(code, compress, uriEncoded)
+    // debounce
+    if (timeout) clearTimeout(timeout)
+    timeout = setTimeout(() => {
+      generateMarkletCode(code, compress, uriEncoded)
+    }, 300)
   }
 
   $: linkCode = `<a href="${encodedCode}"> ${title} </a>`;
