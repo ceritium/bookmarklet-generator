@@ -10,28 +10,33 @@
   let selfUrl = ''
   let encodedCode = ''
   let compress = false;
+  let uriEncoded = true;
   let jsError = null;
 
-  const generateMarkletCode = async (code, compress) => {
-    let compressedCode = ''
+  const generateMarkletCode = async (code, compress, uriEncoded) => {
+    let processedCode = code.trim()
     if (compress) {
       try {
-        compressedCode = (await minify({"inline.js": code}, {compress: true})).code
+        processedCode = (await minify({"inline.js": processedCode}, {compress: true})).code
         jsError = null
       } catch(e) {
         jsError = e.message
       }
     } else {
-      compressedCode = code.trim()
       jsError = null
     }
 
-    const encodeUri = (`(function(){${compressedCode}})();`)
-    encodedCode = `javascript:${encodeUri};`
+    processedCode = `(function(){${processedCode}})();`
+
+    if (uriEncoded) {
+      processedCode = encodeURIComponent(processedCode)
+    }
+
+    encodedCode = `javascript:${processedCode};`
   }
 
   $: {
-    generateMarkletCode(code, compress)
+    generateMarkletCode(code, compress, uriEncoded)
   }
 
   $: linkCode = `<a href="${encodedCode}"> ${title} </a>`;
@@ -82,6 +87,14 @@
 <label>
   Compress js
   <input type="checkbox" bind:checked={compress} />
+</label>
+
+<label>
+  URI encoded
+  <input type="checkbox" bind:checked={uriEncoded} />
+  <small>
+    The bookmark may not work if the code is not URI encoded.
+  </small>
 </label>
 
 <a class="link" href={encodedCode}>{title}</a>
