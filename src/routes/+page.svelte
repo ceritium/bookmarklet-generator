@@ -48,7 +48,7 @@
   $: linkCode = `<a href="${encodedCode}"> ${title} </a>`;
   $: {
     if(browser && ready) {
-      const data = {code: code, title: title}
+      const data = {code: code, title: title, compress: compress, uriEncoded: uriEncoded}
       const hash = LZString.compressToEncodedURIComponent(JSON.stringify(data))
       window.location.hash = hash;
       selfUrl = window.location.toString()
@@ -62,6 +62,8 @@
 			const data = JSON.parse(LZString.decompressFromEncodedURIComponent(hash));
       code = data.code;
       title = data.title;
+      compress = data.compress;
+      uriEncoded = data.uriEncoded;
 
 		} catch (e) {
       code = 'alert("Hello world!");'
