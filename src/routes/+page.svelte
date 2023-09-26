@@ -86,7 +86,9 @@
 </label>
 <label for="code">
   Code
-  <textarea bind:value={code} rows={10} />
+  // Disabled grammarly as described here: https://stackoverflow.com/a/46777787
+  // Disabled the browser spellcheck
+  <textarea data-gramm="false" data-gramm_editor="false" data-enable-grammarly="false" spellcheck="false" bind:value={code} rows={10} />
   {#if (jsError) }
     <small style="color: red;">{jsError}</small>
   {/if}
